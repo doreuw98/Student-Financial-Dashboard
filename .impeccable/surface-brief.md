@@ -10,5 +10,5 @@ SIGNATURE: A straight green budget/goal track places recorded spending or surplu
 TYPE: Bundled Source Serif Pro headings and bundled Streamlit sans body; tabular monetary values.
 COLOR: Pale warm paper with sage navigation, forest green income and burnt orange expenses. Red/amber reserved for invalid or over-budget states.
 MOTION: Native control feedback only; no entrance animation or decorative motion.
-CONTENT: Indonesian interface, integer JPY, six synthetic months, isolated demo/private SQLite databases. Savings metric explicitly means monthly surplus, not actual bank savings.
+CONTENT: Japanese interface for the user's presentation, comma-grouped integer JPY, YYYY年M月 periods, six synthetic months, isolated demo/private SQLite databases. Stored category/type identifiers remain compatible with prior versions. Personal notes are preserved. Language selection (English/Indonesian/Japanese) is explicitly deferred until a later pre-final update. Savings metric explicitly means monthly surplus, not actual bank savings.
 CONSTRAINTS: Local-only server, no credential entry, no paid services, no bank integration. No user finances are shipped in Git.

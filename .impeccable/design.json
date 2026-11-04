@@ -30,7 +30,7 @@
       "kind": "card",
       "refersTo": "summary-band",
       "description": "Shared tonal grouping for monthly metrics.",
-      "html": "<section class=\"ds-summary\"><span class=\"ds-label\">Pemasukan</span><strong class=\"ds-value\">¥120.000</strong></section>",
+      "html": "<section class=\"ds-summary\"><span class=\"ds-label\">収入</span><strong class=\"ds-value\">¥120,000</strong></section>",
       "css": ".ds-summary { background: #E0EDDF; border-radius: 14px; padding: 1.3rem 1.5rem; margin-top: 1rem; font-family: sans-serif; } .ds-label { display: block; color: #345441; } .ds-value { display: block; color: var(--ink, #183C30); font-variant-numeric: tabular-nums; font-size: clamp(1.3rem, 2.5vw, 2.1rem); } @media (max-width: 700px) { .ds-summary { padding: 1rem; } .ds-value { font-size: 1.7rem; } }"
     }
   ],

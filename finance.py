@@ -49,11 +49,11 @@ def save_transaction(path, day, kind, category, amount, note="", transaction_id=
     day = date.fromisoformat(str(day))
     note = note.strip()
     if kind not in CATEGORIES or category not in CATEGORIES[kind]:
-        raise ValueError("Kategori tidak sesuai dengan jenis transaksi.")
+        raise ValueError("収支区分とカテゴリーが一致していません。")
     if isinstance(amount, bool) or not isinstance(amount, int) or not 0 < amount <= MAX_AMOUNT:
-        raise ValueError("Nominal harus berupa yen bulat, antara 1 dan 1.000.000.000.")
+        raise ValueError("金額は1円から1,000,000,000円までの整数で入力してください。")
     if len(note) > 120:
-        raise ValueError("Catatan maksimal 120 karakter.")
+        raise ValueError("メモは120文字以内で入力してください。")
     values = (day.isoformat(), kind, category, amount, note)
     with database(path) as connection:
         if transaction_id is None:
@@ -65,14 +65,14 @@ def save_transaction(path, day, kind, category, amount, note="", transaction_id=
             (*values, int(transaction_id)),
         )
         if not cursor.rowcount:
-            raise ValueError("Transaksi sudah tidak tersedia. Muat ulang halaman.")
+            raise ValueError("この記録はすでに削除されています。ページを再読み込みしてください。")
         return transaction_id
 
 
 def delete_transaction(path, transaction_id):
     with database(path) as connection:
         if not connection.execute("DELETE FROM transactions WHERE id=?", (int(transaction_id),)).rowcount:
-            raise ValueError("Transaksi sudah tidak tersedia. Muat ulang halaman.")
+            raise ValueError("この記録はすでに削除されています。ページを再読み込みしてください。")
 
 
 def transactions(path):
@@ -99,7 +99,7 @@ def get_plan(path, month):
 def save_plan(path, month, budget, goal):
     date.fromisoformat(month + "-01")
     if any(isinstance(value, bool) or not isinstance(value, int) or not 0 <= value <= MAX_AMOUNT for value in (budget, goal)):
-        raise ValueError("Anggaran dan target harus antara 0 dan 1.000.000.000 yen.")
+        raise ValueError("予算と目標は0円から1,000,000,000円までの整数で入力してください。")
     with database(path) as connection:
         connection.execute(
             "INSERT INTO plans VALUES(?,?,?) ON CONFLICT(month) DO UPDATE SET budget=excluded.budget,goal=excluded.goal",

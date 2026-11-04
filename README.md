@@ -1,35 +1,34 @@
-# Student Financial Dashboard
+# 学生の家計管理ダッシュボード
 
-Dashboard keuangan mahasiswa berbasis **Python + Streamlit**, dengan antarmuka Indonesia dan mata uang **yen Jepang (JPY)**. Dibuat untuk belajar Python, demonstrasi kelas, dan pencatatan keuangan lokal.
+**Python・Streamlit**で開発した、学生向けの家計管理アプリです。授業での発表、Python学習、日々の収支の記録に使えます。表示言語は日本語、通貨は日本円（JPY）です。
 
-![Ringkasan dashboard — data simulasi](dashboard-desktop.png)
+![ダッシュボード：発表用サンプルデータ](dashboard-desktop.png)
 
-## Fitur
+## 主な機能
 
-- Ringkasan pemasukan, pengeluaran, surplus bulanan, dan rasio surplus.
-- Grafik tren enam bulan dan distribusi kategori pengeluaran.
-- Tambah, ubah, hapus, cari, filter, dan ekspor transaksi ke CSV.
-- Anggaran bulanan dan target surplus dengan indikator progres.
-- Insight sederhana berdasarkan angka tercatat, tanpa layanan AI atau API berbayar.
-- Mode **Demo presentasi** dan **Data pribadi** memakai database terpisah.
-- Penyimpanan SQLite lokal; perubahan tetap tersedia setelah aplikasi ditutup.
-- Tata letak menyesuaikan layar desktop dan ponsel.
+- 月ごとの収入・支出・収支・黒字率を確認。
+- 過去6か月の収入と支出、カテゴリー別の支出をグラフで表示。
+- 記録の追加・編集・削除、絞り込み、メモ・カテゴリーの検索、CSV出力。
+- 月間予算と黒字目標を設定し、達成状況を確認。
+- 登録済みの記録に基づいた、支出の見直しに役立つメッセージ。
+- デモデータと個人データを別々のSQLiteデータベースに保存。
+- パソコン・スマートフォンの画面幅に合わせた表示。
 
-**Surplus bukan saldo rekening:** pemasukan dikurangi pengeluaran pada bulan terpilih. Target surplus tidak mengukur setoran atau saldo tabungan aktual. Rasio ditampilkan sebagai `—` saat pemasukan nol.
+**今月の収支＝収入−支出**です。銀行口座の残高や実際の貯蓄額ではありません。黒字目標も、選択した月の収支に対する目標です。収入が0円のとき、黒字率は`—`と表示します。
 
-## Menjalankan proyek yang sudah disiapkan
+## 起動方法（準備済みの環境）
 
-Di VS Code, buka folder proyek lalu **Terminal > New Terminal**:
+VS Codeでプロジェクトを開き、ターミナルから実行します。
 
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-Buka [http://127.0.0.1:8501](http://127.0.0.1:8501). Tekan **Ctrl+C** untuk berhenti. Jika aplikasi dijalankan dari proses latar oleh asisten, tutup proses tersebut sebelum memulai server baru pada port yang sama.
+[http://127.0.0.1:8501](http://127.0.0.1:8501)を開きます。終了する場合はターミナルで**Ctrl+C**を押してください。バックグラウンドで起動済みの場合は、先にそのプロセスを終了してから同じポートで起動してください。
 
-## Instalasi dari GitHub
+## GitHubからのセットアップ
 
-Gunakan Python 3.14 dan Git:
+Python 3.14とGitをインストールしてから実行してください。
 
 ```powershell
 git clone https://github.com/doreuw98/Student-Financial-Dashboard.git
@@ -39,54 +38,54 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-Perintah memakai interpreter langsung sehingga tidak perlu mengubah kebijakan PowerShell atau mengaktifkan lingkungan manual. VS Code juga merekomendasikan ekstensi Python dan interpreter `.venv`.
+仮想環境内のPythonを直接指定するため、PowerShellの実行ポリシーを変更する必要はありません。
 
-## Panduan singkat
+## 発表・操作の流れ
 
-1. Pilih **Demo presentasi** untuk mencoba enam bulan data simulasi, atau **Data pribadi** untuk mulai kosong.
-2. Pilih periode di bagian atas. Semua ringkasan, daftar transaksi dan rencana mengikuti bulan ini; grafik menampilkan enam bulan sampai periode terpilih.
-3. Di **Transaksi > Tambah**, pilih jenis, tanggal, kategori dan nominal yen bulat. Transaksi masuk ke bulan sesuai tanggalnya.
-4. Di **Ubah / hapus**, pilih transaksi. Penghapusan memerlukan centang konfirmasi.
-5. Di **Anggaran**, simpan batas pengeluaran dan target surplus. Nilai 0 berarti belum diatur.
-6. Di **Riwayat**, filter atau cari, lalu pilih **Unduh CSV** untuk mengekspor hasil yang sedang terlihat.
+1. **デモデータ**を選ぶと、6か月分のサンプルデータを表示します。実際の家計情報ではありません。
+2. **ダッシュボード**で、収入・支出・今月の収支を説明します。表示月を変えると、その月の集計に切り替わります。
+3. **収支記録 → 追加**で、日付、区分、カテゴリー、金額、メモを入力します。保存先の月は記録の日付で決まります。
+4. **履歴**で「食費」などを検索し、必要に応じてCSVをダウンロードします。
+5. **編集・削除**で記録を修正できます。削除には確認のチェックが必要です。
+6. **予算・目標**で支出予算と黒字目標を設定し、進捗を確認します。0は未設定を意味します。
+7. 自分の記録を始める場合は、**自分のデータ**に切り替えます。デモの編集は個人データに影響しません。
 
-Data demo dibuat sekali pada saat mode demo pertama kali dibuka. Perubahan demo tersimpan, dan transaksi yang dihapus tidak muncul kembali secara otomatis.
+デモは最初に開いたときに一度だけ作成されます。変更は保存され、削除した記録が自動で復活することはありません。
 
-## Struktur yang ringkas
+## コード構成
 
-```text
-app.py                 Antarmuka, formulir, dan grafik
-finance.py             SQLite, validasi, perhitungan, dan generator demo
-style.css              Palet, tipografi, dan penyesuaian responsif
-requirements.txt       Tiga dependensi langsung
-tests/                 Pengujian penyimpanan, hitungan, dan alur antarmuka
-.streamlit/config.toml Tema dan server lokal
-.vscode/               Interpreter dan rekomendasi ekstensi
-data/private/          Dibuat otomatis; tidak diunggah ke GitHub
-```
+- `app.py`：画面、フォーム、グラフ、日本語での表示。
+- `finance.py`：SQLite、入力検証、集計、デモデータの生成。
+- `style.css`：配色、文字、画面幅への対応。
+- `tests/`：保存処理、計算、画面操作、日本語表示のテスト。
+- `.streamlit/config.toml`：テーマとローカルサーバー設定。
+- `.vscode/`：Python環境と推奨拡張機能の設定。
 
-## Pengujian
+保存済みデータとの互換性を保つため、収支区分とカテゴリーの内部値は従来のままです。画面・CSVでは日本語に変換します。個人が入力したメモは書き換えません。
+
+## テスト
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 .\.venv\Scripts\python.exe -m pip check
 ```
 
-Pengujian memakai database sementara dan tidak menyentuh data pengguna. Mencakup CRUD, validasi nominal/kategori, pemisahan bulan, persistensi rencana, demo tanpa duplikasi, pergantian halaman, mode pribadi kosong, dan simpan rencana lewat UI.
+テストは一時データベースを使用し、利用者の記録を変更しません。追加・編集・削除、月ごとの集計、予算保存、赤字を含む目標計算、デモの重複防止、日本語カテゴリー検索を確認します。
 
-## Data dan privasi
+## データの保存と公開範囲
 
-- Catatan pribadi berada di `data/private/finance.sqlite3`, demo di `data/private/demo.sqlite3`.
-- Server dibatasi ke `127.0.0.1`; aplikasi ini untuk satu pengguna lokal, tanpa login, koneksi bank, atau sinkronisasi cloud.
-- Database belum terenkripsi. Backup pribadi dilakukan dengan menutup server lalu menyalin folder `data/private/` ke lokasi yang kamu kontrol; simpan terpisah dari repository.
-- `.gitignore` mengecualikan database, lingkungan Python, log, `.env`, kunci, dan `secrets.toml`.
-- Simpan file finansial tambahan di `data/private/`. File CSV yang diunduh ke folder lain tidak otomatis dilindungi aturan folder ini.
-- Tinjau file sebelum commit. `.gitignore` tidak menghapus berkas yang sudah masuk riwayat Git.
+- 個人データ：`data/private/finance.sqlite3`
+- デモデータ：`data/private/demo.sqlite3`
+- どちらもGitの対象外です。仮想環境、ログ、`.env`、秘密鍵、`secrets.toml`も除外します。
+- ローカルの1人用アプリです。サーバーは`127.0.0.1`に限定し、銀行連携・ログイン・クラウド同期は行いません。
+- データベースは暗号化されていません。バックアップはサーバー終了後に`data/private/`を別の安全な保存先へコピーしてください。
+- 個人の金融ファイルは`data/private/`に保管してください。別のフォルダーへ保存したCSVは、このフォルダーの除外設定では保護されません。
+- コミット前に必ず対象ファイルを確認してください。`.gitignore`は、すでに追跡されたファイルを履歴から削除しません。
 
-Tidak ada data keuangan nyata yang disertakan. Screenshot dalam repository memakai data demo.
+リポジトリのスクリーンショットはサンプルデータのみを使用しています。
 
-## Teknologi
+## 今後の予定
 
-Python 3.14, Streamlit, Pandas, Altair, dan SQLite bawaan Python. Font disediakan Streamlit; aplikasi tidak memerlukan pengambilan font atau gambar dari layanan pihak ketiga.
+発表に向けて、現在は日本語版に集中しています。**英語・インドネシア語・日本語の切り替え機能は、最終化前の別の更新で実装予定です。現時点では未実装です。**
 
-Referensi: [dokumentasi instalasi Streamlit](https://docs.streamlit.io/get-started/installation/command-line).
+使用技術：Python 3.14、Streamlit、Pandas、Altair、Python標準のSQLite。日本語フォントには端末内のフォールバックを使用し、外部のフォント取得サービスは不要です。

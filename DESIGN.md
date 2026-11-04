@@ -14,12 +14,12 @@ colors:
   selection: "#CDE7CE"
 typography:
   display:
-    fontFamily: '"Source Serif Pro", Georgia, serif'
+    fontFamily: '"Source Serif Pro", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif'
     fontSize: "clamp(2rem, 3vw, 3rem)"
     fontWeight: 600
     letterSpacing: "-0.025em"
   sidebar-title:
-    fontFamily: '"Source Serif Pro", Georgia, serif'
+    fontFamily: '"Source Serif Pro", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif'
     fontSize: "1.65rem"
     fontWeight: 600
   title:
@@ -86,7 +86,7 @@ A quiet student workspace uses warm paper, sage navigation and forest accents to
 
 ## Typography
 
-Product and page titles use bundled Source Serif Pro with Georgia and serif fallbacks. Body text uses Streamlit's bundled sans-serif theme; avoid an external font dependency. Smaller section headings inherit the native Streamlit family.
+Product and page titles use bundled Source Serif Pro with installed Japanese Mincho faces (Yu Mincho / Hiragino Mincho ProN) and Georgia/serif fallbacks. Body text uses Streamlit's bundled sans-serif theme and system Japanese fallback; avoid an external font dependency. Smaller section headings inherit the native Streamlit family. Present application-owned content in Japanese; use comma-grouped yen and YYYY年M月 periods. Do not add language selection until the user requests the deferred multilingual update.
 
 Use the frontmatter display scale for page titles and sidebar-title for the navigation title. Section titles use the title scale. Metrics use the metric scale and tabular numerals; tables also use tabular numerals. At the compact breakpoint metric values use (1.7rem). Heading levels two and three share the title letter spacing.
 

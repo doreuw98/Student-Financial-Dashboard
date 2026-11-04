@@ -15,7 +15,10 @@ Original conversation specifies Japanese yen, income/expense overview, category 
 Data stays on the user's computer; secrets and personal financial records must not enter Git.
 
 ## Delegated decisions
-User asked to continue all work with attractive UI and concise code. Builder chooses Indonesian labels, a light green-accented interface, SQLite persistence and an isolated, clearly marked demo dataset. No bank connection, authentication or cloud deployment is requested.
+User asked to continue all work with attractive UI and concise code. Builder chooses a light green-accented interface, SQLite persistence and an isolated, clearly marked demo dataset. No bank connection, authentication or cloud deployment is requested.
+
+## Presentation language
+User explicitly requests Japanese throughout the application for presentation. Use Japanese labels, chart text, messages and synthetic-demo descriptions; JPY thousands use commas and months use YYYY年M月. Preserve existing stored values and personal notes. English/Indonesian/Japanese language selection is planned for a later update before finalization; do not implement a language switcher yet.
 
 ## Evidence
 Only synthetic demonstration data is supplied. Do not present it as the user's finances.
