@@ -1,0 +1,29 @@
+# Lingkungan Python dan cache
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Kredensial dan konfigurasi pribadi
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.pem
+*.key
+
+# Data keuangan pribadi (simpan di folder data/private)
+data/private/
+*.db
+*.sqlite
+*.sqlite3
+
+# File sementara
+*.log
+Thumbs.db
+.DS_Store
+
+# Pemeriksaan desain dan riwayat lokal alat bantu
+.impeccable/questions/
+.impeccable/review/

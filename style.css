@@ -1,0 +1,24 @@
+/* Kontrol bawaan Streamlit; satu palet dan ritme untuk seluruh halaman. */
+:root { --ink: #183c30; --green: #17644d; --muted: #52685d; }
+::selection { background: #cde7ce; color: #183c30; }
+.stApp { background: #f7f8f2; }
+.block-container { max-width: 1440px; padding-top: 2.5rem; padding-bottom: 1rem; }
+.stApp h1 { font-family: "Source Serif Pro", Georgia, serif !important; font-size: clamp(2rem, 3vw, 3rem) !important; font-weight: 600 !important; letter-spacing: -.025em; color: var(--ink); }
+h2, h3 { color: var(--ink); letter-spacing: -.015em; }
+h3 { font-size: 1.25rem !important; }
+[data-testid="stSidebar"] { background: #e8eee2; border-right: 1px solid #d5dfce; }
+[data-testid="stSidebar"] h1 { font-size: 1.65rem !important; }
+[data-testid="stSidebar"] [data-testid="stRadio"] { margin-top: 1.25rem; }
+.stApp [data-testid="stCaptionContainer"] { opacity: 1; }
+.stApp [data-testid="stCaptionContainer"] p { color: var(--muted); }
+.st-key-summary { background: #e0eddf; border-radius: 14px; padding: 1.3rem 1.5rem; margin-top: 1rem; }
+[data-testid="stMetricValue"] { color: var(--ink); font-variant-numeric: tabular-nums; font-size: clamp(1.3rem, 2.5vw, 2.1rem); }
+[data-testid="stMetricLabel"] { color: #345441; }
+[data-testid="stDataFrame"] { font-variant-numeric: tabular-nums; }
+button, input, textarea { caret-color: var(--green); }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+@media (max-width: 700px) {
+  .block-container { padding: 1.25rem 1rem; }
+  .st-key-summary { padding: 1rem; }
+  [data-testid="stMetricValue"] { font-size: 1.7rem; }
+}
