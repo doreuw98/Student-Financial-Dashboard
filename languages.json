@@ -83,9 +83,9 @@
     "en": "Account not found. Please sign in again.",
     "id": "Akun tidak ditemukan. Silakan masuk kembali."
   },
-  "アカウントごとに分かれた家計データ": {
-    "en": "Separate financial records for each account",
-    "id": "Data keuangan terpisah untuk setiap akun"
+  "同じアカウントなら、言語を変えても家計データは同じです。": {
+    "en": "One account, the same financial records in every language.",
+    "id": "Satu akun, catatan keuangan yang sama dalam semua bahasa."
   },
   "アカウントを作成": {
     "en": "Create account",
@@ -415,9 +415,9 @@
     "en": "日本語",
     "id": "日本語"
   },
-  "日本語・英語・インドネシア語に対応": {
-    "en": "Japanese, English and Indonesian",
-    "id": "Bahasa Jepang, Inggris, dan Indonesia"
+  "登録時もログイン時も、表示言語を自由に選べます。": {
+    "en": "Choose your language when signing up or logging in.",
+    "id": "Pilih bahasa saat mendaftar maupun masuk."
   },
   "最近の記録": {
     "en": "Recent transactions",

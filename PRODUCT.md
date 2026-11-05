@@ -20,6 +20,8 @@ User asked to continue all work with attractive UI and concise code. Builder cho
 ## Presentation language
 Japanese is the initial presentation language. User subsequently requests Japanese/English/Indonesian switching from sidebar Settings. Store each account's choice in SQLite. Translate application labels, charts, exports, messages and synthetic demo notes; preserve user-written notes, stored type/category identifiers and JPY currency.
 
+User clarified that the same account must retain exactly the same finances across languages. The language selected on signup/login is authoritative for the dashboard and updates the account preference. Successful login opens personal records; synthetic demo remains an explicit sidebar option. Language never participates in financial database paths or account identity.
+
 ## Local account boundaries
 Passwords use salted scrypt hashes. Usernames are normalized ASCII identifiers; display names may include Japanese. Authentication is required before any dashboard reads. Each server-validated user ID owns a separate private/demo database pair under data/private/users/. Existing unowned legacy databases remain untouched and are not assigned to the first registrant. Accounts are local to this computer, not internet identities. No shared default account, email verification or password recovery is provided.
 

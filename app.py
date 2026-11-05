@@ -431,8 +431,8 @@ def login_page(account_path):
             st.subheader(t("毎日の記録を、あなたの場所に。"))
             st.write(t("自分のアカウントで、収支と目標を管理しましょう。"))
             st.divider()
-            st.write(t("アカウントごとに分かれた家計データ"))
-            st.write(t("日本語・英語・インドネシア語に対応"))
+            st.write(t("同じアカウントなら、言語を変えても家計データは同じです。"))
+            st.write(t("登録時もログイン時も、表示言語を自由に選べます。"))
             st.caption(t("このパソコンだけで使う、発表・学習向けのアプリです。"))
     with right:
         login, register = st.tabs([t("ログイン"), t("新規登録")])
@@ -450,9 +450,13 @@ def login_page(account_path):
                     except ValueError as error:
                         st.error(t(str(error)))
                     else:
+                        language = st.session_state.get("language", "ja")
+                        accounts.set_language(account_path, user["id"], language)
                         st.session_state.clear()
                         st.session_state.update(
-                            user_id=user["id"], language=user["language"]
+                            user_id=user["id"],
+                            language=language,
+                            active_mode="personal",
                         )
                         st.rerun()
         with register:

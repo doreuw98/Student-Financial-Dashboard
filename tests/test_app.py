@@ -185,3 +185,76 @@ class AppTests(unittest.TestCase):
         self.assertFalse(list(self.app.dataframe))
         self.assertEqual(fin.transactions(self.personal_path()).iloc[0]["amount"], 777)
         self.assertEqual(legacy.read_bytes(), original_bytes)
+
+    def test_same_account_keeps_records_and_budget_when_logging_in_each_language(self):
+        month = self.app.selectbox[0].value
+        path = self.personal_path()
+        fin.initialize(path)
+        fin.save_transaction(
+            path, month + "-01", "Pemasukan", "Beasiswa", 12345, "My scholarship"
+        )
+        fin.save_transaction(
+            path, month + "-01", "Pengeluaran", "Makanan", 678, "Catatan saya・私のメモ"
+        )
+        fin.save_plan(path, month, 9000, 3000)
+        original = path.read_bytes()
+        for language, login, income in [
+            ("en", "Log in", "Income"),
+            ("id", "Masuk", "Pemasukan"),
+            ("ja", "ログイン", "収入"),
+        ]:
+            next(
+                button
+                for button in self.app.button
+                if button.label in {"ログアウト", "Log out", "Keluar"}
+            ).click().run()
+            self.app.selectbox[0].set_value(language).run()
+            self.app.text_input[0].set_value("test_student")
+            self.app.text_input[1].set_value("Test-only password 2026")
+            next(
+                button for button in self.app.button if button.label == login
+            ).click().run()
+            self.clean()
+            self.assertEqual(self.app.session_state["user_id"], self.user_id)
+            self.assertEqual(self.app.session_state["language"], language)
+            self.assertEqual(
+                accounts.get_user(self.account_path, self.user_id)["language"], language
+            )
+            self.assertEqual(self.app.radio[0].value, "personal")
+            self.assertEqual(self.app.metric[0].label, income)
+            self.assertEqual(
+                [item.value for item in self.app.metric[:3]],
+                ["¥12,345", "¥678", "¥11,667"],
+            )
+            self.assertIn(
+                "Catatan saya・私のメモ", list(self.app.dataframe[0].value.iloc[:, 3])
+            )
+            self.assertEqual(fin.get_plan(path, month), (9000, 3000))
+            self.assertEqual(path.read_bytes(), original)
+
+    def test_signup_language_is_used_after_login(self):
+        next(
+            button for button in self.app.button if button.label == "ログアウト"
+        ).click().run()
+        self.app.selectbox[0].set_value("en").run()
+        self.app.text_input[2].set_value("English student")
+        self.app.text_input[3].set_value("english_student")
+        self.app.text_input[4].set_value("Test-only English password")
+        self.app.text_input[5].set_value("Test-only English password")
+        next(
+            button for button in self.app.button if button.label == "Create account"
+        ).click().run()
+        self.assertTrue(list(self.app.success))
+        user = accounts.authenticate(
+            self.account_path, "english_student", "Test-only English password"
+        )
+        self.assertEqual(user["language"], "en")
+        self.app.text_input[0].set_value("english_student")
+        self.app.text_input[1].set_value("Test-only English password")
+        next(
+            button for button in self.app.button if button.label == "Log in"
+        ).click().run()
+        self.clean()
+        self.assertEqual(self.app.session_state["user_id"], user["id"])
+        self.assertEqual(self.app.metric[0].label, "Income")
+        self.assertEqual(self.app.metric[0].value, "¥0")
