@@ -38,12 +38,17 @@ spacing:
   medium: "1.25rem"
   summary-block: "1.3rem"
   summary-inline: "1.5rem"
+  welcome: "2rem"
   page-top: "2.5rem"
 components:
   summary-band:
     backgroundColor: "{colors.summary-sage}"
     rounded: "{rounded.summary}"
     padding: "1.3rem 1.5rem"
+  welcome-panel:
+    backgroundColor: "{colors.summary-sage}"
+    rounded: "{rounded.summary}"
+    padding: "{spacing.welcome}"
   sidebar:
     backgroundColor: "{colors.sage}"
   metric:
@@ -86,7 +91,7 @@ A quiet student workspace uses warm paper, sage navigation and forest accents to
 
 ## Typography
 
-Product and page titles use bundled Source Serif Pro with installed Japanese Mincho faces (Yu Mincho / Hiragino Mincho ProN) and Georgia/serif fallbacks. Body text uses Streamlit's bundled sans-serif theme and system Japanese fallback; avoid an external font dependency. Smaller section headings inherit the native Streamlit family. Present application-owned content in Japanese; use comma-grouped yen and YYYY年M月 periods. Do not add language selection until the user requests the deferred multilingual update.
+Product and page titles use bundled Source Serif Pro with installed Japanese Mincho faces (Yu Mincho / Hiragino Mincho ProN) and Georgia/serif fallbacks. Body text uses Streamlit's bundled sans-serif theme and system Japanese fallback; avoid an external font dependency. Smaller section headings inherit the native Streamlit family. Japanese is the initial language; account settings also support English and Indonesian. Preserve the layout and hierarchy in all three languages. Use comma-grouped yen, Japanese YYYY年M月 and localized year/month periods.
 
 Use the frontmatter display scale for page titles and sidebar-title for the navigation title. Section titles use the title scale. Metrics use the metric scale and tabular numerals; tables also use tabular numerals. At the compact breakpoint metric values use (1.7rem). Heading levels two and three share the title letter spacing.
 
@@ -108,6 +113,9 @@ The summary band has gently curved corners using the summary radius. History bar
 
 ### Summary band
 A shared tonal container groups monthly values with summary-block/summary-inline padding and compact spacing above. Labels remain subdued; values remain ink and tabular.
+
+### Login and account settings
+Login pairs a sage welcome panel (14px radius, 2rem padding) with native login/register tabs and forms. On compact screens, panel padding is 1rem and supplementary welcome paragraphs/divider are hidden so the form remains reachable. Headings and the local-use caption stay visible. Settings extends the same native form language, with an explicit language-save action. Sidebar settings/logout use Material icons and translated labels.
 
 ### Buttons and inputs
 Use native Streamlit buttons, form controls, tabs and selectors. Primary submissions use the forest theme. Preserve native hover, disabled and error behavior. Buttons, inputs and textareas receive a forest focus outline (2px) with an offset (3px); caret color is forest.

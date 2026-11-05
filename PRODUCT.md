@@ -15,10 +15,13 @@ Original conversation specifies Japanese yen, income/expense overview, category 
 Data stays on the user's computer; secrets and personal financial records must not enter Git.
 
 ## Delegated decisions
-User asked to continue all work with attractive UI and concise code. Builder chooses a light green-accented interface, SQLite persistence and an isolated, clearly marked demo dataset. No bank connection, authentication or cloud deployment is requested.
+User asked to continue all work with attractive UI and concise code. Builder chooses a light green-accented interface, SQLite persistence and an isolated, clearly marked demo dataset. User now requests SQLite-backed local registration/login and a settings button in the left sidebar. No bank connection or public/cloud deployment is requested.
 
 ## Presentation language
-User explicitly requests Japanese throughout the application for presentation. Use Japanese labels, chart text, messages and synthetic-demo descriptions; JPY thousands use commas and months use YYYY年M月. Preserve existing stored values and personal notes. English/Indonesian/Japanese language selection is planned for a later update before finalization; do not implement a language switcher yet.
+Japanese is the initial presentation language. User subsequently requests Japanese/English/Indonesian switching from sidebar Settings. Store each account's choice in SQLite. Translate application labels, charts, exports, messages and synthetic demo notes; preserve user-written notes, stored type/category identifiers and JPY currency.
+
+## Local account boundaries
+Passwords use salted scrypt hashes. Usernames are normalized ASCII identifiers; display names may include Japanese. Authentication is required before any dashboard reads. Each server-validated user ID owns a separate private/demo database pair under data/private/users/. Existing unowned legacy databases remain untouched and are not assigned to the first registrant. Accounts are local to this computer, not internet identities. No shared default account, email verification or password recovery is provided.
 
 ## Evidence
 Only synthetic demonstration data is supplied. Do not present it as the user's finances.

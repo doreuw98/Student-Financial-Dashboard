@@ -1,27 +1,70 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-04T05:05:00Z",
+  "generatedAt": "2026-11-05T01:07:03Z",
   "title": "Design System: Student Financial Dashboard",
   "extensions": {
     "colorMeta": {
-      "forest": {"role": "primary", "displayName": "Forest"},
-      "expense-orange": {"role": "secondary", "displayName": "Expense Orange"},
-      "paper": {"role": "neutral", "displayName": "Paper"},
-      "sage": {"role": "neutral", "displayName": "Sage"},
-      "summary-sage": {"role": "neutral", "displayName": "Summary Sage"},
-      "ink": {"role": "neutral", "displayName": "Ink"},
-      "muted": {"role": "neutral", "displayName": "Muted"}
+      "forest": {
+        "role": "primary",
+        "displayName": "Forest"
+      },
+      "expense-orange": {
+        "role": "secondary",
+        "displayName": "Expense Orange"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper"
+      },
+      "sage": {
+        "role": "neutral",
+        "displayName": "Sage"
+      },
+      "summary-sage": {
+        "role": "neutral",
+        "displayName": "Summary Sage"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted"
+      }
     },
     "typographyMeta": {
-      "display": {"displayName": "Page title", "purpose": "Product and page headings."},
-      "body": {"displayName": "Native sans", "purpose": "Use Streamlit bundled sans typography; no external font loading."},
-      "metric": {"displayName": "Financial value", "purpose": "Tabular numeric figures; compact viewport size is 1.7rem."}
+      "display": {
+        "displayName": "Page title",
+        "purpose": "Product and page headings."
+      },
+      "body": {
+        "displayName": "Native sans",
+        "purpose": "Use Streamlit bundled sans typography; no external font loading."
+      },
+      "metric": {
+        "displayName": "Financial value",
+        "purpose": "Tabular numeric figures; compact viewport size is 1.7rem."
+      }
     },
     "shadows": [],
     "motion": [],
-    "breakpoints": [{"name": "compact", "value": "700px"}],
-    "focus": {"outline": "2px solid var(--green)", "outlineOffset": "3px", "targets": "button:focus-visible, input:focus-visible, textarea:focus-visible"},
-    "layout": {"maxWidth": "1440px", "compactPadding": "1.25rem 1rem", "nativeResponsiveColumns": true},
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "700px"
+      }
+    ],
+    "focus": {
+      "outline": "2px solid var(--green)",
+      "outlineOffset": "3px",
+      "targets": "button:focus-visible, input:focus-visible, textarea:focus-visible"
+    },
+    "layout": {
+      "maxWidth": "1440px",
+      "compactPadding": "1.25rem 1rem",
+      "nativeResponsiveColumns": true
+    },
     "nativeControls": "Streamlit owns button, input, sidebar radio, tabs, progress, table and alert interaction states. No bespoke motion or shadow tokens."
   },
   "components": [
@@ -32,14 +75,40 @@
       "description": "Shared tonal grouping for monthly metrics.",
       "html": "<section class=\"ds-summary\"><span class=\"ds-label\">収入</span><strong class=\"ds-value\">¥120,000</strong></section>",
       "css": ".ds-summary { background: #E0EDDF; border-radius: 14px; padding: 1.3rem 1.5rem; margin-top: 1rem; font-family: sans-serif; } .ds-label { display: block; color: #345441; } .ds-value { display: block; color: var(--ink, #183C30); font-variant-numeric: tabular-nums; font-size: clamp(1.3rem, 2.5vw, 2.1rem); } @media (max-width: 700px) { .ds-summary { padding: 1rem; } .ds-value { font-size: 1.7rem; } }"
+    },
+    {
+      "name": "Welcome panel",
+      "kind": "card",
+      "refersTo": "welcome-panel",
+      "description": "Tonal welcome panel beside native account forms. Supplementary paragraphs and divider hide at the compact breakpoint; heading and local-use caption remain.",
+      "html": "<section class=\"ds-welcome\"><h1>Student Finance</h1><p class=\"ds-supplement\">毎月のお金を、見える形に。</p><hr class=\"ds-divider\"><small>このパソコンだけで使う、発表・学習向けのアプリです。</small></section>",
+      "css": ".ds-welcome { background: #E0EDDF; border-radius: 14px; padding: 2rem; color: var(--ink, #183C30); font-family: sans-serif; } .ds-welcome h1 { font-family: \"Source Serif Pro\", \"Yu Mincho\", \"Hiragino Mincho ProN\", Georgia, serif; font-size: clamp(2rem, 3vw, 3rem); font-weight: 600; letter-spacing: -.025em; } .ds-welcome small { color: var(--muted, #52685D); } @media (max-width: 700px) { .ds-welcome { padding: 1rem; } .ds-welcome .ds-supplement, .ds-welcome .ds-divider { display: none; } }"
     }
   ],
   "narrative": {
     "northStar": "Campus Botanical Wayfinding",
     "overview": "A quiet student workspace uses warm paper, sage navigation and forest accents to make financial records approachable. Botanical character comes from color and typography; controls remain familiar Streamlit components. Clear labels and visible amounts carry the meaning.",
-    "keyCharacteristics": ["Pale tonal surfaces with restrained green emphasis", "Serif titles and native bundled sans text", "Tabular monetary values and straight progress tracks"],
-    "rules": [{"name": "The Semantic Pair Rule", "body": "Preserve forest for income and orange for expenses in comparative history. A single-series category chart stays forest.", "section": "colors"}],
-    "dos": ["Do reuse the palette and native controls.", "Do pair color with labels and numeric values.", "Do preserve visible keyboard focus and readable captions."],
-    "donts": ["Don't add ornamental shadows, entrance animation or external font loading.", "Don't replace financial forms with novelty controls.", "Don't depend on color alone for financial meaning."]
+    "keyCharacteristics": [
+      "Pale tonal surfaces with restrained green emphasis",
+      "Serif titles and native bundled sans text",
+      "Tabular monetary values and straight progress tracks"
+    ],
+    "rules": [
+      {
+        "name": "The Semantic Pair Rule",
+        "body": "Preserve forest for income and orange for expenses in comparative history. A single-series category chart stays forest.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do reuse the palette and native controls.",
+      "Do pair color with labels and numeric values.",
+      "Do preserve visible keyboard focus and readable captions."
+    ],
+    "donts": [
+      "Don't add ornamental shadows, entrance animation or external font loading.",
+      "Don't replace financial forms with novelty controls.",
+      "Don't depend on color alone for financial meaning."
+    ]
   }
 }

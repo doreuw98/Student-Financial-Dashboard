@@ -12,6 +12,7 @@ h3 { font-size: 1.25rem !important; }
 .stApp [data-testid="stCaptionContainer"] { opacity: 1; }
 .stApp [data-testid="stCaptionContainer"] p { color: var(--muted); }
 .st-key-summary { background: #e0eddf; border-radius: 14px; padding: 1.3rem 1.5rem; margin-top: 1rem; }
+.st-key-welcome { background: #e0eddf; border-radius: 14px; padding: 2rem; }
 [data-testid="stMetricValue"] { color: var(--ink); font-variant-numeric: tabular-nums; font-size: clamp(1.3rem, 2.5vw, 2.1rem); }
 [data-testid="stMetricLabel"] { color: #345441; }
 [data-testid="stDataFrame"] { font-variant-numeric: tabular-nums; }
@@ -20,5 +21,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 @media (max-width: 700px) {
   .block-container { padding: 1.25rem 1rem; }
   .st-key-summary { padding: 1rem; }
+  .st-key-welcome { padding: 1rem; }
+  .st-key-welcome [data-testid="stMarkdownContainer"] p,
+  .st-key-welcome [data-testid="stDivider"] { display: none; }
   [data-testid="stMetricValue"] { font-size: 1.7rem; }
 }
