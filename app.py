@@ -13,7 +13,8 @@ from translations import t
 
 ROOT = Path(__file__).parent
 TODAY = datetime.now(ZoneInfo("Asia/Tokyo")).date()
-GREEN, ORANGE = ("#17644D", "#B45A31")
+PURPLE, TEAL, BLUE, PINK = "#A05AFF", "#1BCFB4", "#4BCBEB", "#FE9496"
+MUTED = "#6B6477"
 STORED_LABELS = {
     "Pemasukan": t("収入"),
     "Pengeluaran": t("支出"),
@@ -142,155 +143,187 @@ def overview(frame, selected, month, path):
     income, expenses, balance = fin.totals(selected)
     budget, goal = fin.get_plan(path, month)
     with st.container(key="summary"):
-        for column, heading, value in zip(
-            st.columns(4),
-            [t("収入"), t("支出"), t("今月の収支"), t("黒字率")],
-            [
-                yen(income),
-                yen(expenses),
-                yen(balance),
-                f"{balance / income:.1%}" if income else "—",
-            ],
+        for column, key, heading, value in zip(
+            st.columns(3),
+            ["card_income", "card_expenses", "card_balance"],
+            [t("収入"), t("支出"), t("今月の収支")],
+            [yen(income), yen(expenses), yen(balance)],
         ):
-            column.metric(heading, value)
+            with column:
+                with st.container(key=key):
+                    st.metric(heading, value)
+                    st.caption(month_label(month))
     st.caption(t("今月の収支＝収入−支出。銀行口座の残高や実際の貯蓄額ではありません。"))
-    left, right = st.columns([1.7, 1], gap="large")
+
+    left, right = st.columns([1.65, 1], gap="medium")
     with left:
-        st.subheader(t("収入・支出の推移"))
-        st.caption(t("選択した月までの6か月間"))
-        periods = pd.period_range(end=month, periods=6, freq="M").astype(str)
-        history = (
-            frame.assign(month=frame["date"].str[:7])
-            .groupby(["month", "kind"])["amount"]
-            .sum()
-        )
-        chart_data = pd.DataFrame(
-            [
-                {
-                    t("月"): month_label(period),
-                    t("区分"): label(kind),
-                    t("金額"): int(history.get((period, kind), 0)),
-                }
-                for period in periods
-                for kind in ["Pemasukan", "Pengeluaran"]
-            ]
-        )
-        chart = (
-            alt.Chart(chart_data)
-            .mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3)
-            .encode(
-                x=alt.X(
-                    t("月:N"),
-                    title=None,
-                    sort=[month_label(period) for period in periods],
-                    axis=alt.Axis(labelAngle=-30),
-                ),
-                y=alt.Y(
-                    t("金額:Q"), title=t("金額（円）"), axis=alt.Axis(format=",.0f")
-                ),
-                xOffset=t("区分:N"),
-                color=alt.Color(
-                    t("区分:N"),
-                    scale=alt.Scale(
-                        domain=[t("収入"), t("支出")], range=[GREEN, ORANGE]
-                    ),
-                    legend=alt.Legend(orient="bottom", title=None),
-                ),
-                tooltip=[t("月"), t("区分"), alt.Tooltip(t("金額:Q"), format=",.0f")],
+        with st.container(key="trend_panel"):
+            st.subheader(t("収入・支出の推移"))
+            st.caption(t("選択した月までの6か月間"))
+            periods = pd.period_range(end=month, periods=6, freq="M").astype(str)
+            history = (
+                frame.assign(month=frame["date"].str[:7])
+                .groupby(["month", "kind"])["amount"]
+                .sum()
             )
-            .properties(height=270)
-            .configure_axis(labelColor="#52685D", titleColor="#52685D")
-            .configure_legend(labelColor="#52685D")
-        )
-        st.altair_chart(chart, width="stretch")
-    with right:
-        st.subheader(t("黒字目標への進捗"))
-        st.caption(t("選択した月の目標を確認しましょう"))
-        st.metric(t("今月の収支 / 黒字目標"), f"{yen(balance)} / {yen(goal)}")
-        if goal:
-            st.progress(min(max(balance / goal, 0), 1))
-            st.write(
-                t("今月の黒字目標を達成しました。")
-                if balance >= goal
-                else t("目標達成まであと{v0}です。", v0=yen(goal - balance))
+            chart_data = pd.DataFrame(
+                [
+                    {
+                        t("月"): month_label(period),
+                        t("区分"): label(kind),
+                        t("金額"): int(history.get((period, kind), 0)),
+                    }
+                    for period in periods
+                    for kind in ["Pemasukan", "Pengeluaran"]
+                ]
             )
-        else:
-            st.info(t("「予算・目標」で黒字目標を設定してください。"))
-        st.divider()
-        if budget:
-            st.write(
-                f"{(t('予算超過') if expenses > budget else t('予算の残り'))}：**{yen(abs(budget - expenses))}**"
-            )
-            st.caption(
-                t(
-                    "予算{v0}のうち{v1:.0%}を使用しています。",
-                    v0=yen(budget),
-                    v1=expenses / budget,
-                )
-            )
-        else:
-            st.caption(t("支出予算がまだ設定されていません。"))
-    left, right = st.columns([1, 1.7], gap="large")
-    with left:
-        st.subheader(t("カテゴリー別の支出"))
-        spending = (
-            selected[selected["kind"] == "Pengeluaran"]
-            .groupby("category", as_index=False)["amount"]
-            .sum()
-            .sort_values("amount", ascending=False)
-        )
-        spending["category"] = spending["category"].map(label)
-        if spending.empty:
-            st.info(t("この月の支出はまだありません。"))
-        else:
             chart = (
-                alt.Chart(spending)
-                .mark_bar(cornerRadiusEnd=4, color=GREEN)
+                alt.Chart(chart_data)
+                .mark_bar(size=14, cornerRadiusTopLeft=2, cornerRadiusTopRight=2)
                 .encode(
-                    y=alt.Y("category:N", title=None, sort="-x"),
-                    x=alt.X("amount:Q", title=t("金額（円）")),
+                    x=alt.X(
+                        t("月:N"),
+                        title=None,
+                        sort=[month_label(period) for period in periods],
+                        axis=alt.Axis(labelAngle=-25),
+                    ),
+                    y=alt.Y(
+                        t("金額:Q"),
+                        title=t("金額（円）"),
+                        axis=alt.Axis(format=",.0f", tickCount=5),
+                    ),
+                    xOffset=t("区分:N"),
+                    color=alt.Color(
+                        t("区分:N"),
+                        scale=alt.Scale(
+                            domain=[t("収入"), t("支出")], range=[PURPLE, PINK]
+                        ),
+                        legend=alt.Legend(orient="bottom", title=None),
+                    ),
                     tooltip=[
-                        alt.Tooltip("category:N", title=t("カテゴリー")),
-                        alt.Tooltip("amount:Q", title=t("金額（円）"), format=",.0f"),
+                        t("月"),
+                        t("区分"),
+                        alt.Tooltip(t("金額:Q"), format=",.0f"),
                     ],
                 )
-                .properties(height=230)
-                .configure_axis(labelColor="#52685D", titleColor="#52685D")
+                .properties(height=245, background="#FFFFFF")
+                .configure_axis(labelColor=MUTED, titleColor=MUTED, gridColor="#F0EDF5")
+                .configure_legend(labelColor=MUTED)
+                .configure_view(stroke=None)
             )
-            st.altair_chart(chart, width="stretch")
-            biggest = spending.iloc[0]
+            st.altair_chart(chart, width="stretch", theme=None)
+
+    spending = (
+        selected[selected["kind"] == "Pengeluaran"]
+        .groupby("category", as_index=False)["amount"]
+        .sum()
+        .sort_values("amount", ascending=False)
+    )
+    spending["category"] = spending["category"].map(label)
+    with right:
+        with st.container(key="category_panel"):
+            st.subheader(t("カテゴリー別の支出"))
+            if spending.empty:
+                st.info(t("この月の支出はまだありません。"))
+            else:
+                chart = (
+                    alt.Chart(spending)
+                    .mark_arc(
+                        innerRadius=47, outerRadius=77, padAngle=0.025, cornerRadius=2
+                    )
+                    .encode(
+                        theta=alt.Theta("amount:Q", stack=True),
+                        color=alt.Color(
+                            "category:N",
+                            title=None,
+                            sort=list(spending["category"]),
+                            scale=alt.Scale(
+                                range=[TEAL, BLUE, PINK, "#7430B8", "#9E58FF", "#CDB4FF"]
+                            ),
+                            legend=alt.Legend(
+                                orient="bottom",
+                                columns=2,
+                                symbolType="circle",
+                                labelLimit=150,
+                            ),
+                        ),
+                        order=alt.Order("amount:Q", sort="descending"),
+                        tooltip=[
+                            alt.Tooltip("category:N", title=t("カテゴリー")),
+                            alt.Tooltip(
+                                "amount:Q", title=t("金額（円）"), format=",.0f"
+                            ),
+                        ],
+                    )
+                    .properties(height=245, background="#FFFFFF")
+                    .configure_legend(labelColor=MUTED)
+                    .configure_view(stroke=None)
+                )
+                st.altair_chart(chart, width="stretch", theme=None)
+                biggest = spending.iloc[0]
+                st.caption(
+                    t(
+                        "{v0}が今月の支出の{v1:.0%}を占めています。",
+                        v0=biggest["category"],
+                        v1=biggest["amount"] / expenses,
+                    )
+                )
+
+    left, right = st.columns([1.65, 1], gap="medium")
+    with left:
+        with st.container(key="records_panel"):
+            st.subheader(t("最近の記録"))
+            if selected.empty:
+                st.info(t("「収支記録」から最初の記録を追加しましょう。"))
+            else:
+                display_table(selected.head(5))
+            if expenses > income:
+                st.warning(
+                    t(
+                        "支出が収入を{v0}上回っています。見直せる支出を確認しましょう。",
+                        v0=yen(expenses - income),
+                    )
+                )
+            elif income:
+                st.success(
+                    t(
+                        "今月の黒字は{v0}です。優先順位を考えて計画的に使いましょう。",
+                        v0=yen(balance),
+                    )
+                )
             st.caption(
                 t(
-                    "{v0}が今月の支出の{v1:.0%}を占めています。",
-                    v0=biggest["category"],
-                    v1=biggest["amount"] / expenses,
+                    "表示内容は登録済みの記録に基づきます。将来予測や専門的な金融助言ではありません。"
                 )
             )
     with right:
-        st.subheader(t("最近の記録"))
-        if selected.empty:
-            st.info(t("「収支記録」から最初の記録を追加しましょう。"))
-        else:
-            display_table(selected.head(5))
-        if expenses > income:
-            st.warning(
-                t(
-                    "支出が収入を{v0}上回っています。見直せる支出を確認しましょう。",
-                    v0=yen(expenses - income),
+        with st.container(key="target_panel"):
+            st.subheader(t("黒字目標への進捗"))
+            st.metric(t("黒字率"), f"{balance / income:.1%}" if income else "—")
+            st.metric(t("今月の収支 / 黒字目標"), f"{yen(balance)} / {yen(goal)}")
+            if goal:
+                st.progress(min(max(balance / goal, 0), 1))
+                st.write(
+                    t("今月の黒字目標を達成しました。")
+                    if balance >= goal
+                    else t("目標達成まであと{v0}です。", v0=yen(goal - balance))
                 )
-            )
-        elif income:
-            st.success(
-                t(
-                    "今月の黒字は{v0}です。優先順位を考えて計画的に使いましょう。",
-                    v0=yen(balance),
+            else:
+                st.info(t("「予算・目標」で黒字目標を設定してください。"))
+            st.divider()
+            if budget:
+                st.write(
+                    f"{(t('予算超過') if expenses > budget else t('予算の残り'))}：**{yen(abs(budget - expenses))}**"
                 )
-            )
-        st.caption(
-            t(
-                "表示内容は登録済みの記録に基づきます。将来予測や専門的な金融助言ではありません。"
-            )
-        )
+                st.caption(
+                    t(
+                        "予算{v0}のうち{v1:.0%}を使用しています。",
+                        v0=yen(budget),
+                        v1=expenses / budget,
+                    )
+                )
+            else:
+                st.caption(t("支出予算がまだ設定されていません。"))
 
 
 def transaction_page(selected, path, month):
@@ -534,6 +567,10 @@ def main():
     if user is None:
         login_page(account_path)
         return
+    with st.container(key="topbar"):
+        brand, profile = st.columns([3, 1])
+        brand.caption(t("学生の家計管理"))
+        profile.caption(user["display_name"])
     with st.sidebar:
         st.title(t("学生の家計管理"))
         st.caption(t("小さな習慣から、未来のゆとりへ。"))
@@ -611,7 +648,7 @@ def main():
     with title:
         st.title(
             {
-                "overview": t("お金の流れを、もっと見やすく。"),
+                "overview": t("ダッシュボード"),
                 "transactions": t("日々の収支を、ていねいに。"),
                 "budget": t("目標に向けて、ゆとりある計画を。"),
             }[page]

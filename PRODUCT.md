@@ -30,3 +30,6 @@ Only synthetic demonstration data is supplied. Do not present it as the user's f
 
 ## Principles
 Readable Python, a small number of modules, meaningful calculations, accessible native controls, explicit demo/private separation.
+
+## Approved visual reference
+User explicitly replaces the prior sage/forest look with the supplied Purple dashboard screenshot: white sidebar/top bar and content panels, pale lavender canvas, three pink/blue/teal summary cards, bar chart and doughnut distribution. Pinned palette: primary #A05AFF and #1BCFB4; supporting #4BCBEB, #FE9496, #9E58FF. Keep the product's real financial data and account/language behavior. Use dark text on bright cards for readable contrast; do not invent reference screenshot sales/traffic statistics.

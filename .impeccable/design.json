@@ -1,54 +1,30 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-05T01:07:03Z",
+  "generatedAt": "2026-11-06T00:49:57.968Z",
   "title": "Design System: Student Financial Dashboard",
   "extensions": {
     "colorMeta": {
-      "forest": {
+      "purple": {
         "role": "primary",
-        "displayName": "Forest"
+        "displayName": "Purple"
       },
-      "expense-orange": {
+      "pink": {
         "role": "secondary",
-        "displayName": "Expense Orange"
+        "displayName": "Summary Pink"
       },
-      "paper": {
-        "role": "neutral",
-        "displayName": "Paper"
+      "blue": {
+        "role": "secondary",
+        "displayName": "Summary Blue"
       },
-      "sage": {
-        "role": "neutral",
-        "displayName": "Sage"
+      "teal": {
+        "role": "secondary",
+        "displayName": "Summary Teal"
       },
-      "summary-sage": {
+      "canvas": {
         "role": "neutral",
-        "displayName": "Summary Sage"
-      },
-      "ink": {
-        "role": "neutral",
-        "displayName": "Ink"
-      },
-      "muted": {
-        "role": "neutral",
-        "displayName": "Muted"
+        "displayName": "Lilac Canvas"
       }
     },
-    "typographyMeta": {
-      "display": {
-        "displayName": "Page title",
-        "purpose": "Product and page headings."
-      },
-      "body": {
-        "displayName": "Native sans",
-        "purpose": "Use Streamlit bundled sans typography; no external font loading."
-      },
-      "metric": {
-        "displayName": "Financial value",
-        "purpose": "Tabular numeric figures; compact viewport size is 1.7rem."
-      }
-    },
-    "shadows": [],
-    "motion": [],
     "breakpoints": [
       {
         "name": "compact",
@@ -56,59 +32,81 @@
       }
     ],
     "focus": {
-      "outline": "2px solid var(--green)",
+      "outline": "2px solid var(--purple-ink)",
       "outlineOffset": "3px",
       "targets": "button:focus-visible, input:focus-visible, textarea:focus-visible"
     },
     "layout": {
       "maxWidth": "1440px",
-      "compactPadding": "1.25rem 1rem",
-      "nativeResponsiveColumns": true
+      "compactPadding": "3.5rem 1rem 1.2rem",
+      "desktopPadding": "1.7rem 2rem 1.5rem"
     },
-    "nativeControls": "Streamlit owns button, input, sidebar radio, tabs, progress, table and alert interaction states. No bespoke motion or shadow tokens."
+    "shadows": [],
+    "motion": []
   },
   "components": [
     {
-      "name": "Summary band",
+      "name": "Top bar",
       "kind": "card",
-      "refersTo": "summary-band",
-      "description": "Shared tonal grouping for monthly metrics.",
-      "html": "<section class=\"ds-summary\"><span class=\"ds-label\">収入</span><strong class=\"ds-value\">¥120,000</strong></section>",
-      "css": ".ds-summary { background: #E0EDDF; border-radius: 14px; padding: 1.3rem 1.5rem; margin-top: 1rem; font-family: sans-serif; } .ds-label { display: block; color: #345441; } .ds-value { display: block; color: var(--ink, #183C30); font-variant-numeric: tabular-nums; font-size: clamp(1.3rem, 2.5vw, 2.1rem); } @media (max-width: 700px) { .ds-summary { padding: 1rem; } .ds-value { font-size: 1.7rem; } }"
+      "refersTo": "topbar",
+      "description": "Slim brand and account bar.",
+      "html": "<div class=\"ds-topbar\"><span>学生の家計管理</span><span>デモユーザー</span></div>",
+      "css": ".ds-topbar { display:flex; justify-content:space-between; background:#fff; border-radius:6px; padding:.7rem 1.5rem; color:var(--muted,#6b6477); font: .875rem sans-serif; } @media (max-width:700px) { .ds-topbar { padding:.65rem 1rem; } }"
+    },
+    {
+      "name": "Income summary",
+      "kind": "card",
+      "refersTo": "summary-card",
+      "description": "Income gradient card and selected month.",
+      "html": "<section class=\"ds-card\"><span>収入</span><strong>¥120,000</strong><span>2026年11月</span></section>",
+      "css": ".ds-card { position:relative; overflow:hidden; box-sizing:border-box; min-height:156px; border-radius:9px; padding:1.3rem 1.4rem 1rem; background:linear-gradient(115deg,#fe9496,#f77bb0); color:#43364e; font-family:sans-serif; } .ds-card::after { content:\"\"; position:absolute; width:180px; height:180px; border-radius:50%; right:-65px; top:-80px; background:#ffffff26; pointer-events:none; } .ds-card strong { display:block; color:#2f253a; font-size:clamp(1.7rem,2.5vw,2.25rem); font-weight:650; font-variant-numeric:tabular-nums; } @media (max-width:700px) { .ds-card { padding:1rem 1.2rem; min-height:132px; } }"
+    },
+    {
+      "name": "Expenses summary",
+      "kind": "card",
+      "refersTo": "summary-card",
+      "description": "Expenses gradient card and selected month.",
+      "html": "<section class=\"ds-card\"><span>支出</span><strong>¥82,000</strong><span>2026年11月</span></section>",
+      "css": ".ds-card { position:relative; overflow:hidden; box-sizing:border-box; min-height:156px; border-radius:9px; padding:1.3rem 1.4rem 1rem; background:linear-gradient(115deg,#4bcbeb,#7cb4fc); color:#43364e; font-family:sans-serif; } .ds-card::after { content:\"\"; position:absolute; width:180px; height:180px; border-radius:50%; right:-65px; top:-80px; background:#ffffff26; pointer-events:none; } .ds-card strong { display:block; color:#2f253a; font-size:clamp(1.7rem,2.5vw,2.25rem); font-weight:650; font-variant-numeric:tabular-nums; } @media (max-width:700px) { .ds-card { padding:1rem 1.2rem; min-height:132px; } }"
+    },
+    {
+      "name": "Balance summary",
+      "kind": "card",
+      "refersTo": "summary-card",
+      "description": "Balance gradient card and selected month.",
+      "html": "<section class=\"ds-card\"><span>今月の収支</span><strong>¥38,000</strong><span>2026年11月</span></section>",
+      "css": ".ds-card { position:relative; overflow:hidden; box-sizing:border-box; min-height:156px; border-radius:9px; padding:1.3rem 1.4rem 1rem; background:linear-gradient(115deg,#1bcfb4,#68ddd0); color:#43364e; font-family:sans-serif; } .ds-card::after { content:\"\"; position:absolute; width:180px; height:180px; border-radius:50%; right:-65px; top:-80px; background:#ffffff26; pointer-events:none; } .ds-card strong { display:block; color:#2f253a; font-size:clamp(1.7rem,2.5vw,2.25rem); font-weight:650; font-variant-numeric:tabular-nums; } @media (max-width:700px) { .ds-card { padding:1rem 1.2rem; min-height:132px; } }"
     },
     {
       "name": "Welcome panel",
       "kind": "card",
       "refersTo": "welcome-panel",
-      "description": "Tonal welcome panel beside native account forms. Supplementary paragraphs and divider hide at the compact breakpoint; heading and local-use caption remain.",
-      "html": "<section class=\"ds-welcome\"><h1>Student Finance</h1><p class=\"ds-supplement\">毎月のお金を、見える形に。</p><hr class=\"ds-divider\"><small>このパソコンだけで使う、発表・学習向けのアプリです。</small></section>",
-      "css": ".ds-welcome { background: #E0EDDF; border-radius: 14px; padding: 2rem; color: var(--ink, #183C30); font-family: sans-serif; } .ds-welcome h1 { font-family: \"Source Serif Pro\", \"Yu Mincho\", \"Hiragino Mincho ProN\", Georgia, serif; font-size: clamp(2rem, 3vw, 3rem); font-weight: 600; letter-spacing: -.025em; } .ds-welcome small { color: var(--muted, #52685D); } @media (max-width: 700px) { .ds-welcome { padding: 1rem; } .ds-welcome .ds-supplement, .ds-welcome .ds-divider { display: none; } }"
+      "description": "White welcome panel beside the native login and registration forms.",
+      "html": "<section class=\"ds-welcome\"><h1>学生の家計管理</h1><p>毎月のお金を、見える形に。</p><hr><small>このパソコンだけで使う、発表・学習向けのアプリです。</small></section>",
+      "css": ".ds-welcome { background:#fff; border-radius:10px; padding:2rem; color:var(--ink,#342e42); font-family:\"Source Sans Pro\",\"Yu Gothic\",\"Hiragino Kaku Gothic ProN\",sans-serif; } .ds-welcome h1 { color:var(--purple-ink,#7430b8); font-size:2rem; font-weight:650; letter-spacing:-.02em; } .ds-welcome small { color:var(--muted,#6b6477); } @media (max-width:700px) { .ds-welcome { padding:1rem; } .ds-welcome p,.ds-welcome hr { display:none; } }"
     }
   ],
   "narrative": {
-    "northStar": "Campus Botanical Wayfinding",
-    "overview": "A quiet student workspace uses warm paper, sage navigation and forest accents to make financial records approachable. Botanical character comes from color and typography; controls remain familiar Streamlit components. Clear labels and visible amounts carry the meaning.",
+    "northStar": "Purple Dashboard",
+    "overview": "The user-selected Purple reference informs the light lilac canvas, white navigation and content panels, and three bright financial summary cards.",
     "keyCharacteristics": [
-      "Pale tonal surfaces with restrained green emphasis",
-      "Serif titles and native bundled sans text",
-      "Tabular monetary values and straight progress tracks"
+      "Lilac canvas and white panels",
+      "Pink, blue and teal summary gradients",
+      "Compact sans type and tabular yen values"
     ],
     "rules": [
       {
-        "name": "The Semantic Pair Rule",
-        "body": "Preserve forest for income and orange for expenses in comparative history. A single-series category chart stays forest.",
+        "name": "Chart and card colors",
+        "body": "Trend charts use purple income and pink expenses. Summary cards use pink income, blue expenses and teal balance.",
         "section": "colors"
       }
     ],
     "dos": [
-      "Do reuse the palette and native controls.",
-      "Do pair color with labels and numeric values.",
-      "Do preserve visible keyboard focus and readable captions."
+      "Do preserve native controls and focus.",
+      "Do label chart and progress values."
     ],
     "donts": [
-      "Don't add ornamental shadows, entrance animation or external font loading.",
-      "Don't replace financial forms with novelty controls.",
-      "Don't depend on color alone for financial meaning."
+      "Don't substitute chart series colors for card gradients."
     ]
   }
 }

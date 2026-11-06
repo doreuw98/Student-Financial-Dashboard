@@ -1,28 +1,60 @@
-/* Kontrol bawaan Streamlit; satu palet dan ritme untuk seluruh halaman. */
-:root { --ink: #183c30; --green: #17644d; --muted: #52685d; }
-::selection { background: #cde7ce; color: #183c30; }
-.stApp { background: #f7f8f2; }
-.block-container { max-width: 1440px; padding-top: 2.5rem; padding-bottom: 1rem; }
-.stApp h1 { font-family: "Source Serif Pro", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif !important; font-size: clamp(2rem, 3vw, 3rem) !important; font-weight: 600 !important; letter-spacing: -.025em; color: var(--ink); }
-h2, h3 { color: var(--ink); letter-spacing: -.015em; }
-h3 { font-size: 1.25rem !important; }
-[data-testid="stSidebar"] { background: #e8eee2; border-right: 1px solid #d5dfce; }
-[data-testid="stSidebar"] h1 { font-size: 1.65rem !important; }
-[data-testid="stSidebar"] [data-testid="stRadio"] { margin-top: 1.25rem; }
+/* Palette and dashboard structure follow the user's Purple reference. */
+:root {
+  --purple: #a05aff;
+  --purple-ink: #7430b8;
+  --teal: #1bcfb4;
+  --ink: #342e42;
+  --muted: #6b6477;
+  --canvas: #f2edf5;
+}
+::selection { background: #e6d3ff; color: #342e42; }
+.stApp { background: var(--canvas); }
+.stApp, button, input, textarea { font-family: "Source Sans Pro", "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif; }
+.stApp .block-container { max-width: 1440px; padding: 1.7rem 2rem 1.5rem; }
+.stApp h1 { font-family: inherit !important; font-size: clamp(1.45rem, 2vw, 1.8rem) !important; font-weight: 650 !important; letter-spacing: -.02em; color: var(--ink); }
+.stApp h3 { font-size: 1.05rem !important; font-weight: 600; color: var(--ink); }
+.stApp [data-testid="stHeader"] { background: transparent !important; border: 0; }
+[data-testid="stSidebar"] { background: #fff; border-right: 1px solid #eee9f4; }
+[data-testid="stSidebar"] h1 { color: var(--purple-ink); font-size: 1.45rem !important; }
+[data-testid="stSidebar"] [data-testid="stRadio"] { margin-top: 1rem; }
+[data-testid="stSidebar"] button { border-color: #e9e2f3; }
 .stApp [data-testid="stCaptionContainer"] { opacity: 1; }
 .stApp [data-testid="stCaptionContainer"] p { color: var(--muted); }
-.st-key-summary { background: #e0eddf; border-radius: 14px; padding: 1.3rem 1.5rem; margin-top: 1rem; }
-.st-key-welcome { background: #e0eddf; border-radius: 14px; padding: 2rem; }
-[data-testid="stMetricValue"] { color: var(--ink); font-variant-numeric: tabular-nums; font-size: clamp(1.3rem, 2.5vw, 2.1rem); }
-[data-testid="stMetricLabel"] { color: #345441; }
+.st-key-topbar { background: #fff; padding: .7rem 1.5rem; border-radius: 6px; margin-bottom: .5rem; }
+.st-key-topbar [data-testid="stColumn"]:last-child { text-align: right; }
+.st-key-summary { background: transparent; padding: 0; margin: .35rem 0; }
+.st-key-card_income, .st-key-card_expenses, .st-key-card_balance {
+  position: relative; overflow: hidden; border-radius: 9px; padding: 1.3rem 1.4rem 1rem; min-height: 156px;
+}
+.st-key-card_income { background: linear-gradient(115deg, #fe9496, #f77bb0); }
+.st-key-card_expenses { background: linear-gradient(115deg, #4bcbeb, #7cb4fc); }
+.st-key-card_balance { background: linear-gradient(115deg, #1bcfb4, #68ddd0); }
+.st-key-card_income::after, .st-key-card_expenses::after, .st-key-card_balance::after {
+  content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%;
+  background: #ffffff26; right: -65px; top: -80px; pointer-events: none;
+}
+[data-testid="stMetricValue"] { color: var(--ink); font-variant-numeric: tabular-nums; font-size: clamp(1.35rem, 2.3vw, 2rem); }
+[data-testid="stMetricLabel"] { color: #43364e; }
+.st-key-summary [data-testid="stMetricValue"] { color: #2f253a; font-size: clamp(1.7rem, 2.5vw, 2.25rem); font-weight: 650; }
+.st-key-summary [data-testid="stCaptionContainer"] p { color: #43364e; }
+.st-key-trend_panel, .st-key-category_panel, .st-key-records_panel, .st-key-target_panel {
+  background: #fff; border-radius: 8px; padding: 1.4rem; margin-top: .7rem;
+}
+.st-key-trend_panel, .st-key-category_panel { min-height: 385px; }
+.st-key-welcome { background: #fff; border-radius: 10px; padding: 2rem; }
+.st-key-welcome h1 { color: var(--purple-ink); font-size: 2rem !important; }
+[data-testid="stForm"] { background: #fff; border-color: #e8e1ef; border-radius: 8px; }
 [data-testid="stDataFrame"] { font-variant-numeric: tabular-nums; }
-button, input, textarea { caret-color: var(--green); }
-button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
+button[kind="primary"], [data-testid="stFormSubmitButton"] button[kind="primary"] { background: #7430b8; color: #fff; border-color: #7430b8; }
+button[kind="primary"]:hover { background: #62289d; border-color: #62289d; }
+button, input, textarea { caret-color: var(--purple-ink); }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--purple-ink); outline-offset: 3px; }
 @media (max-width: 700px) {
-  .block-container { padding: 1.25rem 1rem; }
-  .st-key-summary { padding: 1rem; }
+  .stApp .block-container { padding: 3.5rem 1rem 1.2rem; }
+  .st-key-topbar { padding: .65rem 1rem; }
+  .st-key-card_income, .st-key-card_expenses, .st-key-card_balance { padding: 1rem 1.2rem; min-height: 132px; }
+  .st-key-trend_panel, .st-key-category_panel, .st-key-records_panel, .st-key-target_panel { padding: 1rem; }
   .st-key-welcome { padding: 1rem; }
-  .st-key-welcome [data-testid="stMarkdownContainer"] p,
-  .st-key-welcome [data-testid="stDivider"] { display: none; }
-  [data-testid="stMetricValue"] { font-size: 1.7rem; }
+  .st-key-welcome [data-testid="stMarkdownContainer"] p, .st-key-welcome [data-testid="stDivider"] { display: none; }
+  [data-testid="stMetricValue"] { font-size: 1.6rem; }
 }
