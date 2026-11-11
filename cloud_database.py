@@ -33,6 +33,7 @@ class CloudDatabase:
 
     @contextmanager
     def connect(self, *, initialize=False):
+        import certifi
         import psycopg
         from psycopg import sql
         from psycopg.rows import dict_row
@@ -41,7 +42,7 @@ class CloudDatabase:
         try:
             with psycopg.connect(
                 self.dsn, row_factory=dict_row, connect_timeout=10,
-                sslmode="verify-full", sslrootcert="system",
+                sslmode="verify-full", sslrootcert=certifi.where(),
             ) as connection:
                 stage = "schema"
                 if initialize:
