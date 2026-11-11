@@ -1,5 +1,7 @@
 # 学生の家計管理ダッシュボード
 
+**[オンライン版を開く / Open the live dashboard](https://student-financial-dashboard.onrender.com/)**
+
 **Python・Streamlit**で開発した、学生向けの家計管理アプリです。授業での発表、Python学習、日々の収支の記録に使えます。初期表示は日本語で、英語・インドネシア語にも切り替えられます。通貨は日本円（JPY）です。
 
 ![ローカルアカウントのログイン画面](login-desktop.png)
