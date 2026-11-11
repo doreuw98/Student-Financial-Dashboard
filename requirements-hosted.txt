@@ -2,3 +2,4 @@
 streamlit[auth]==1.66.1
 psycopg[binary]>=3.3,<4
 certifi>=2026.2.25
+tomli-w==1.2.0

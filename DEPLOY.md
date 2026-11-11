@@ -37,10 +37,12 @@ menghubungi pengelola. Data keuangan disimpan per akun berdasarkan ID Auth0.
    Start Command berikut.
 
    ```sh
-   test -s /etc/secrets/secrets.toml && cp /etc/secrets/secrets.toml .streamlit/secrets.toml && DASHBOARD_MODE=hosted python -m streamlit run app.py --server.address 0.0.0.0 --server.port "$PORT" --server.headless true
+   python start_hosted.py
    ```
 
    Atur `PYTHON_VERSION` ke `3.14.10` dan health check ke `/_stcore/health`.
+   Perintah ini meminta Auth0 menampilkan formulir setiap kali pengguna
+   menekan tombol daftar atau masuk, termasuk saat sesi Auth0 lama masih aktif.
 5. Sebelum membagikan link, uji dua akun dengan alamat email yang berbeda.
    Pastikan verifikasi email dan reset kata sandi sampai ke kotak masuk.
    Buat transaksi di akun pertama, pastikan akun kedua tidak melihatnya,
