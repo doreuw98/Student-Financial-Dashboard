@@ -9,6 +9,7 @@ import pandas as pd
 import streamlit as st
 import finance as fin
 import accounts
+import hosted_accounts
 from translations import t
 
 ROOT = Path(__file__).parent
@@ -492,6 +493,9 @@ def login_page(account_path):
                             active_mode="personal",
                         )
                         st.rerun()
+            with st.expander(t("ユーザー名・パスワードを忘れた場合")):
+                st.write(t("このパソコンの所有者は、VS Codeのターミナルからアカウントを復旧できます。"))
+                st.code(r".\.venv\Scripts\python.exe recover_account.py", language="powershell")
         with register:
             with st.form("register", clear_on_submit=True):
                 display_name = st.text_input(t("表示名"), max_chars=40)
@@ -529,7 +533,27 @@ def login_page(account_path):
                             )
 
 
-def settings_page(account_path, user):
+def hosted_login_page():
+    st.selectbox(
+        t("表示言語"), list(accounts.LANGUAGES),
+        index=list(accounts.LANGUAGES).index(st.session_state.get("language", "ja")),
+        format_func=accounts.LANGUAGES.get, key="hosted_login_language",
+        on_change=lambda: st.session_state.update(
+            language=st.session_state.hosted_login_language
+        ),
+    )
+    st.title(t("学生の家計管理"))
+    if st.user.is_logged_in:
+        st.info(t("メール認証を完了し、ログアウトしてからもう一度ログインしてください。"))
+        if st.button(t("ログアウト")):
+            st.logout()
+    else:
+        st.write(t("登録とログインにはメールアドレスを使います。パスワードの再設定もログイン画面から行えます。"))
+        if st.button(t("登録・ログイン"), type="primary"):
+            st.login()
+
+
+def settings_page(account_path, user, account_backend=accounts):
     st.title(t("設定"))
     st.write(t("表示言語を選んでください。選択はアカウントに保存されます。"))
     with st.form("settings"):
@@ -540,7 +564,7 @@ def settings_page(account_path, user):
             format_func=accounts.LANGUAGES.get,
         )
         if st.form_submit_button(t("設定を保存"), type="primary"):
-            accounts.set_language(account_path, user["id"], language)
+            account_backend.set_language(account_path, user["id"], language)
             st.session_state["language"] = language
             st.rerun()
     st.caption(
@@ -561,12 +585,28 @@ def main():
         f"<style>{(ROOT / 'style.css').read_text(encoding='utf-8')}</style>",
         unsafe_allow_html=True,
     )
-    account_path = ROOT / "data" / "private" / "accounts.sqlite3"
-    accounts.initialize(account_path)
-    user = accounts.get_user(account_path, st.session_state.get("user_id"))
-    if user is None:
-        login_page(account_path)
-        return
+    local_path = ROOT / "data" / "private"
+    data_path = hosted_accounts.data_directory(local_path)
+    hosted = data_path != local_path
+    account_backend = hosted_accounts if hosted else accounts
+    if hosted:
+        account_path = data_path
+        user = (
+            hosted_accounts.profile(account_path, st.user, st.session_state.get("language", "ja"))
+            if st.user.is_logged_in else None
+        )
+        if user is None:
+            hosted_login_page()
+            return
+        st.session_state.setdefault("language", user["language"])
+        st.session_state.setdefault("active_mode", "personal")
+    else:
+        account_path = data_path / "accounts.sqlite3"
+        accounts.initialize(account_path)
+        user = accounts.get_user(account_path, st.session_state.get("user_id"))
+        if user is None:
+            login_page(account_path)
+            return
     with st.container(key="topbar"):
         brand, profile = st.columns([3, 1])
         brand.caption(t("学生の家計管理"))
@@ -603,35 +643,40 @@ def main():
         if st.button(t("設定"), icon=":material/settings:", width="stretch"):
             st.session_state["settings_open"] = True
         if st.button(t("ログアウト"), icon=":material/logout:", width="stretch"):
+            if hosted:
+                st.session_state.clear()
+                st.logout()
             language = st.session_state.get("language", "ja")
             st.session_state.clear()
             st.session_state["language"] = language
             st.rerun()
         st.divider()
-        st.caption(t("通貨：日本円（JPY）\n\nデータはこのパソコンに保存されます。"))
+        st.caption(t(
+            "通貨：日本円（JPY）" if hosted
+            else "通貨：日本円（JPY）\n\nデータはこのパソコンに保存されます。"
+        ))
         if mode == "demo":
             st.info(
                 t(
                     "発表用のサンプルデータです。デモの変更は自分のデータに影響しません。"
                 )
             )
-        else:
+        elif not hosted:
             st.caption(
                 t(
                     "保存データは暗号化されていません。ご自身のWindowsアカウントでご利用ください。"
                 )
             )
     if st.session_state.get("settings_open"):
-        settings_page(account_path, user)
+        settings_page(account_path, user, account_backend)
         return
-    path = (
-        ROOT
-        / "data"
-        / "private"
-        / "users"
-        / str(user["id"])
-        / ("demo.sqlite3" if mode == "demo" else "finance.sqlite3")
-    )
+    if hosted:
+        path = data_path.ledger(user["id"], mode)
+    else:
+        path = (
+            data_path / "users" / str(user["id"])
+            / ("demo.sqlite3" if mode == "demo" else "finance.sqlite3")
+        )
     fin.initialize(path)
     if mode == "demo":
         fin.seed_demo(path, TODAY)
@@ -683,7 +728,8 @@ def main():
     st.divider()
     st.caption(
         t(
-            "学生の家計管理 · Python・Streamlitで開発 · データはパソコン内に保存されます。"
+            "学生の家計管理 · Python・Streamlitで開発" if hosted
+            else "学生の家計管理 · Python・Streamlitで開発 · データはパソコン内に保存されます。"
         )
     )
 

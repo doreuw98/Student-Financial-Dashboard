@@ -16,6 +16,25 @@ class AccountTests(unittest.TestCase):
         self.path = Path(self.folder.name) / "accounts.sqlite3"
         accounts.initialize(self.path)
 
+    def test_local_recovery_preserves_identity_and_rejects_duplicate_username(self):
+        first = accounts.register(self.path, "student_a", "学生A", PASSWORD, "id")
+        accounts.register(self.path, "student_b", "学生B", PASSWORD)
+        replacement = "New local recovery password"
+        self.assertEqual(accounts.list_local_users(self.path)[0]["username"], "student_a")
+        with self.assertRaises(ValueError):
+            accounts.recover_local_user(self.path, first, "student_b", replacement)
+        self.assertEqual(accounts.authenticate(self.path, "student_a", PASSWORD)["id"], first)
+        with fin.database(self.path) as connection:
+            connection.execute(
+                "UPDATE users SET failed_attempts=5, locked_until=? WHERE id=?",
+                (accounts.time.time() + 300, first),
+            )
+        accounts.recover_local_user(self.path, first, "New_Student", replacement)
+        user = accounts.authenticate(self.path, "new_student", replacement)
+        self.assertEqual((user["id"], user["language"]), (first, "id"))
+        with self.assertRaises(ValueError):
+            accounts.authenticate(self.path, "new_student", PASSWORD)
+
     def test_registration_login_unique_names_and_no_plaintext_passwords(self):
         first = accounts.register(self.path, " Student_A ", "学生A", PASSWORD)
         second = accounts.register(self.path, "student_b", "学生B", PASSWORD)

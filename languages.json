@@ -1,4 +1,36 @@
 {
+  "学生の家計管理 · Python・Streamlitで開発": {
+    "en": "Student Financial Dashboard · Built with Python and Streamlit",
+    "id": "Dasbor Keuangan Mahasiswa · Dibuat dengan Python dan Streamlit"
+  },
+  "登録・ログイン": {
+    "en": "Sign up or log in",
+    "id": "Daftar atau masuk"
+  },
+  "メール認証を完了し、ログアウトしてからもう一度ログインしてください。": {
+    "en": "Verify your email, then sign out and log in again.",
+    "id": "Verifikasi email, lalu keluar dan masuk kembali."
+  },
+  "登録とログインにはメールアドレスを使います。パスワードの再設定もログイン画面から行えます。": {
+    "en": "Use your email to sign up or log in. You can reset your password from the login screen.",
+    "id": "Gunakan email untuk mendaftar atau masuk. Kamu bisa mengatur ulang kata sandi dari halaman login."
+  },
+  "通貨：日本円（JPY）": {
+    "en": "Currency: Japanese yen (JPY)",
+    "id": "Mata uang: yen Jepang (JPY)"
+  },
+  "ユーザー名またはパスワードを入力してください。": {
+    "en": "Enter a new username or password.",
+    "id": "Masukkan username atau kata sandi baru."
+  },
+  "ユーザー名・パスワードを忘れた場合": {
+    "en": "Forgot your username or password?",
+    "id": "Lupa username atau kata sandi?"
+  },
+  "このパソコンの所有者は、VS Codeのターミナルからアカウントを復旧できます。": {
+    "en": "The owner of this computer can recover an account from the VS Code terminal.",
+    "id": "Pemilik komputer ini bisa memulihkan akun melalui terminal VS Code."
+  },
   "%Y年%m月%d日": {
     "en": "%Y-%m-%d",
     "id": "%d/%m/%Y"
